@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { 
-  useFonts, 
+import {  
+  useFonts,
   Poppins_400Regular, 
   Poppins_500Medium, 
   Poppins_700Bold 
@@ -19,7 +19,7 @@ export default function App() {
   });
 
   if(!fontsLoaded) {
-    <AppLoading />
+    return <AppLoading />
   }
 
   return (
