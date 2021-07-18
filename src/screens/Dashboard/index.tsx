@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+
 import { 
   Container,
   Header,
@@ -7,7 +8,8 @@ import {
   Photo,
   User,
   UserGreeting,
-  UserName
+  UserName,
+  Icon
 } from './styles';
  
 export default function Dashboard(): ReactElement {
@@ -22,8 +24,9 @@ export default function Dashboard(): ReactElement {
               <UserName>Davi</UserName>
             </User>
           </UserInfo>
+
+          <Icon name="power" />
         </UserWrapper>
-        
       </Header>
     </Container>
   );
