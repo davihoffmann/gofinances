@@ -9,22 +9,38 @@ import {
   CategoryName,
   Data
 } from './styles';
+
+interface Category {
+  name: string;
+  icon: string;
+}
+
+interface DataTransaction {
+  title: string;
+  amount: string;
+  category: Category;
+  date: string;
+}
+
+interface Props {
+  data: DataTransaction;
+}
  
-export default function TransactionCard(): ReactElement {
+export default function TransactionCard({ data }: Props): ReactElement {
   return (
     <Container>
-      <Title>Desenvolvimento de Site</Title>
+      <Title>{data.title}</Title>
 
       <Amount>
-        R$ 12.000,00
+        {data.amount}
       </Amount>
 
       <Footer>
         <Category>
-          <Icon name="dollar-sign" />
-          <CategoryName>Vendas</CategoryName>
+          <Icon name={data.category.icon} />
+          <CategoryName>{data.category.name}</CategoryName>
         </Category>
-        <Data>13/04/2020</Data>
+        <Data>{data.date}</Data>
       </Footer>
     </Container>
   );
