@@ -23,6 +23,7 @@ import {
 export default function Dashboard(): ReactElement {
   const data = [
     {
+      type: 'postive',
       title: "Desenvolvimento de Site",
       amount: "R$ 12.000,00",
       category: {
@@ -32,22 +33,24 @@ export default function Dashboard(): ReactElement {
       date: "13/04/2020",
     },
     {
-      title: "Desenvolvimento de Site",
-      amount: "R$ 12.000,00",
+      type: 'negative',
+      title: "Hamburgueria Pizzy",
+      amount: "R$ 59,00",
       category: {
-        name: 'vendas',
-        icon: 'dollar-sign'
+        name: 'Alimentacao',
+        icon: 'coffee'
       },
-      date: "13/04/2020",
+      date: "10/04/2020",
     },
     {
-      title: "Desenvolvimento de Site",
-      amount: "R$ 12.000,00",
+      type: 'negative',
+      title: "Aluguel do Apartamento",
+      amount: "R$ 1.200,00",
       category: {
-        name: 'vendas',
-        icon: 'dollar-sign'
+        name: 'Casa',
+        icon: 'home'
       },
-      date: "13/04/2020",
+      date: "10/04/2020",
     }
   ];
 

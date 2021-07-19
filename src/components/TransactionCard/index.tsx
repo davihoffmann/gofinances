@@ -16,6 +16,7 @@ interface Category {
 }
 
 interface DataTransaction {
+  type: 'postive' | 'negative';
   title: string;
   amount: string;
   category: Category;
@@ -31,7 +32,8 @@ export default function TransactionCard({ data }: Props): ReactElement {
     <Container>
       <Title>{data.title}</Title>
 
-      <Amount>
+      <Amount type={data.type}>
+        {data.type === 'negative' && '- '}
         {data.amount}
       </Amount>
 
