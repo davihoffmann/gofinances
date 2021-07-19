@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { Props } from './types';
 import {
   Container,
   Title,
@@ -9,23 +10,6 @@ import {
   CategoryName,
   Data
 } from './styles';
-
-interface Category {
-  name: string;
-  icon: string;
-}
-
-interface DataTransaction {
-  type: 'postive' | 'negative';
-  title: string;
-  amount: string;
-  category: Category;
-  date: string;
-}
-
-interface Props {
-  data: DataTransaction;
-}
  
 export default function TransactionCard({ data }: Props): ReactElement {
   return (
