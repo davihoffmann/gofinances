@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { TextInputProps } from 'react-native';
 import {
   Container
-} from './style';
+} from './styles';
 
 type Props = TextInputProps;
  
