@@ -1,23 +1,28 @@
 import React, { ReactElement } from 'react';
-import {
-  Container,
-  Icon,
-  Title
-} from './styles';
+import { TouchableOpacityProps } from 'react-native';
+import { Container, Icon, Title } from './styles';
 
-interface Props {
+const icons = {
+  up: 'arrow-up-circle',
+  down: 'arrow-down-circle',
+};
+
+interface Props extends TouchableOpacityProps {
   title: string;
   type: 'up' | 'down';
+  isActive: boolean;
 }
 
-export default function TransactionTypeButton({ title, type }: Props): ReactElement {
+export default function TransactionTypeButton({
+  title,
+  type,
+  isActive,
+  ...rest
+}: Props): ReactElement {
   return (
-    <Container>
-      <Icon />
-      <Title>
-        {title}
-      </Title>
+    <Container isActive={isActive} type={type} {...rest} activeOpacity={0.7}>
+      <Icon name={icons[type]} type={type} />
+      <Title>{title}</Title>
     </Container>
   );
 }
- 

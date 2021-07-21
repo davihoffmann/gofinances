@@ -1,5 +1,5 @@
-import styled from "styled-components/native";
-import { RFValue } from "react-native-responsive-fontsize";
+import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
@@ -33,3 +33,8 @@ export const Form = styled.View`
 `;
 
 export const Fields = styled.View``;
+
+export const TransactionsType = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
