@@ -24,7 +24,7 @@ export default function AppRoutes(): ReactElement {
       }}
     >
       <Screen
-        name="DashBoard"
+        name="Listagem"
         component={DashBoard}
         options={{
           tabBarIcon: ({ size, color }) => (
