@@ -1,19 +1,20 @@
 import React, { ReactElement } from 'react';
-import { TouchableOpacityProps } from 'react-native';
-import { 
-  Container,
-  Title
-} from './styles';
+import { RectButtonProps } from 'react-native-gesture-handler';
+import { Container, Title } from './styles';
 
-type Props = {
+interface Props extends RectButtonProps {
   title: string;
-} & TouchableOpacityProps;
- 
-export default function Button({title, ...rest}: Props): ReactElement {
+  onPress: () => void;
+}
+
+export default function Button({
+  title,
+  onPress,
+  ...rest
+}: Props): ReactElement {
   return (
-    <Container {...rest}>
+    <Container onPress={onPress} {...rest}>
       <Title>{title}</Title>
     </Container>
   );
 }
- 

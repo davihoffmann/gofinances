@@ -4,7 +4,7 @@ import HighlightCard from '../../components/HightlightCard';
 import TransactionCard from '../../components/TransactionCard';
 import { DataListProps } from './types';
 
-import { 
+import {
   Container,
   Header,
   UserWrapper,
@@ -13,48 +13,49 @@ import {
   User,
   UserGreeting,
   UserName,
+  LogoutButton,
   Icon,
   HighlightCards,
   Transactions,
   Title,
-  TransactionList
+  TransactionList,
 } from './styles';
- 
+
 export default function Dashboard(): ReactElement {
   const data: DataListProps[] = [
     {
       id: '1',
       type: 'postive',
-      title: "Desenvolvimento de Site",
-      amount: "R$ 12.000,00",
+      title: 'Desenvolvimento de Site',
+      amount: 'R$ 12.000,00',
       category: {
         name: 'vendas',
-        icon: 'dollar-sign'
+        icon: 'dollar-sign',
       },
-      date: "13/04/2020",
+      date: '13/04/2020',
     },
     {
       id: '2',
       type: 'negative',
-      title: "Hamburgueria Pizzy",
-      amount: "R$ 59,00",
+      title: 'Hamburgueria Pizzy',
+      amount: 'R$ 59,00',
       category: {
         name: 'Alimentacao',
-        icon: 'coffee'
+        icon: 'coffee',
       },
-      date: "10/04/2020",
+      date: '10/04/2020',
     },
     {
       id: '3',
       type: 'negative',
-      title: "Aluguel do Apartamento",
-      amount: "R$ 1.200,00",
+      title: 'Aluguel do Apartamento',
+      amount: 'R$ 1.200,00',
       category: {
         name: 'Casa',
-        icon: 'home'
+        icon: 'home',
       },
-      date: "10/04/2020",
-    }
+      date: '10/04/2020',
+    },
   ];
 
   return (
@@ -62,50 +63,49 @@ export default function Dashboard(): ReactElement {
       <Header>
         <UserWrapper>
           <UserInfo>
-            <Photo source={{uri: 'https://github.com/davihoffmann.png'}} />
+            <Photo source={{ uri: 'https://github.com/davihoffmann.png' }} />
             <User>
               <UserGreeting>Olá,</UserGreeting>
               <UserName>Davi</UserName>
             </User>
           </UserInfo>
 
-          <Icon name="power" />
+          <LogoutButton onPress={() => {}}>
+            <Icon name="power" />
+          </LogoutButton>
         </UserWrapper>
       </Header>
 
       <HighlightCards>
-        <HighlightCard 
+        <HighlightCard
           type="up"
-          title="Entradas" 
-          amount="R$ 17.000,00" 
+          title="Entradas"
+          amount="R$ 17.000,00"
           lastTransaction="Última entrada dia 13 de abril"
         />
-        <HighlightCard 
+        <HighlightCard
           type="down"
-          title="Saídas" 
-          amount="R$ 1.259,00" 
+          title="Saídas"
+          amount="R$ 1.259,00"
           lastTransaction="Última saída dia 03 de abril"
         />
-        <HighlightCard 
+        <HighlightCard
           type="total"
-          title="Total" 
-          amount="R$ 16.141,00" 
+          title="Total"
+          amount="R$ 16.141,00"
           lastTransaction="01 à 16 abril"
         />
       </HighlightCards>
-    
+
       <Transactions>
         <Title>Listagem</Title>
 
         <TransactionList
           data={data}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <TransactionCard data={item} />
-          )}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <TransactionCard data={item} />}
         />
       </Transactions>
     </Container>
   );
 }
- 
