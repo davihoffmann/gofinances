@@ -1,7 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import { Modal } from 'react-native';
+import { useForm } from 'react-hook-form';
 
-import Input from '../../components/Form/Input';
+import InputForm from '../../components/Form/InputForm';
 import TransactionTypeButton from '../../components/Form/TransactionTypeButton';
 import CategorySelectButton from '../../components/Form/CategorySelectButton';
 import Button from '../../components/Form/Button';
@@ -17,6 +18,11 @@ import {
   TransactionsType,
 } from './styles';
 
+interface FormData {
+  name: string;
+  amount: string;
+}
+
 export default function Register(): ReactElement {
   const [category, setCategory] = useState({
     key: 'category',
@@ -24,6 +30,8 @@ export default function Register(): ReactElement {
   });
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+
+  const { control, handleSubmit } = useForm();
 
   function handleTransactionTypeSelect(type: 'up' | 'down') {
     setTransactionType(type);
@@ -37,6 +45,17 @@ export default function Register(): ReactElement {
     setCategoryModalOpen(false);
   }
 
+  function handleRegister(form: FormData) {
+    const data = {
+      name: form.name,
+      amount: form.amount,
+      transactionType,
+      category: category.key,
+    };
+
+    console.log(data);
+  }
+
   return (
     <Container>
       <Header>
@@ -45,8 +64,8 @@ export default function Register(): ReactElement {
 
       <Form>
         <Fields>
-          <Input placeholder="Nome" />
-          <Input placeholder="Preço" />
+          <InputForm name="name" control={control} placeholder="Nome" />
+          <InputForm name="amount" control={control} placeholder="Preço" />
 
           <TransactionsType>
             <TransactionTypeButton
@@ -69,7 +88,7 @@ export default function Register(): ReactElement {
           />
         </Fields>
 
-        <Button title="Enviar" />
+        <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
       </Form>
 
       <Modal visible={categoryModalOpen}>
