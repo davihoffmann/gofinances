@@ -1,14 +1,14 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import InputForm from '../../components/Form/InputForm';
 import TransactionTypeButton from '../../components/Form/TransactionTypeButton';
 import CategorySelectButton from '../../components/Form/CategorySelectButton';
 import Button from '../../components/Form/Button';
-
 import CategorySelect from '../CategorySelect';
 
 const schema = Yup.object().shape({
@@ -35,6 +35,7 @@ interface FormData {
 }
 
 export default function Register(): ReactElement {
+  const dataKey = '@gofinance:transactions';
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Category',
@@ -50,6 +51,16 @@ export default function Register(): ReactElement {
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    async function getData() {
+      const data = await AsyncStorage.getItem(dataKey);
+
+      if (data) {
+        console.log(JSON.parse(data));
+      }
+    }
+  }, []);
+
   function handleTransactionTypeSelect(type: 'up' | 'down') {
     setTransactionType(type);
   }
@@ -62,7 +73,7 @@ export default function Register(): ReactElement {
     setCategoryModalOpen(false);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
     if (!transactionType) {
       Alert.alert('Selecione o Tipo da Transação');
       return;
@@ -80,7 +91,12 @@ export default function Register(): ReactElement {
       category: category.key,
     };
 
-    console.log(data);
+    try {
+      await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Não foi possível salvar os dados.');
+    }
   }
 
   return (
@@ -89,7 +105,6 @@ export default function Register(): ReactElement {
         <Header>
           <Title>Cadastro</Title>
         </Header>
-
         <Form>
           <Fields>
             <InputForm
@@ -131,7 +146,7 @@ export default function Register(): ReactElement {
 
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
-
+        {console.log(categoryModalOpen)}
         <Modal visible={categoryModalOpen}>
           <CategorySelect
             category={category}
