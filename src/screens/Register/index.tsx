@@ -56,19 +56,7 @@ export default function Register(): ReactElement {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    async function getData() {
-      const data = await AsyncStorage.getItem(dataKey);
-
-      if (data) {
-        console.log(JSON.parse(data));
-      }
-    }
-
-    getData();
-  }, []);
-
-  function handleTransactionTypeSelect(type: 'up' | 'down') {
+  function handleTransactionTypeSelect(type: 'positive' | 'negative') {
     setTransactionType(type);
   }
 
@@ -81,6 +69,8 @@ export default function Register(): ReactElement {
   }
 
   async function handleRegister(form: FormData) {
+    const dataKey = '@gofinance:transactions';
+    
     if (!transactionType) {
       Alert.alert('Selecione o Tipo da Transação');
       return;
@@ -95,7 +85,7 @@ export default function Register(): ReactElement {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type: transactionType,
       category: category.key,
       date: new Date()
     };
@@ -154,14 +144,14 @@ export default function Register(): ReactElement {
               <TransactionTypeButton
                 title="Income"
                 type="up"
-                isActive={transactionType === 'up'}
-                onPress={() => handleTransactionTypeSelect('up')}
+                isActive={transactionType === 'positive'}
+                onPress={() => handleTransactionTypeSelect('positive')}
               />
               <TransactionTypeButton
                 title="Outcome"
                 type="down"
-                isActive={transactionType === 'down'}
-                onPress={() => handleTransactionTypeSelect('down')}
+                isActive={transactionType === 'negative'}
+                onPress={() => handleTransactionTypeSelect('negative')}
               />
             </TransactionsType>
 

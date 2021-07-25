@@ -1,4 +1,7 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState, useEffect, useCallback } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useFocusEffect } from '@react-navigation/native';
 
 import HighlightCard from '../../components/HightlightCard';
 import TransactionCard from '../../components/TransactionCard';
@@ -22,41 +25,46 @@ import {
 } from './styles';
 
 export default function Dashboard(): ReactElement {
-  const data: DataListProps[] = [
-    {
-      id: '1',
-      type: 'postive',
-      title: 'Desenvolvimento de Site',
-      amount: 'R$ 12.000,00',
-      category: {
-        name: 'vendas',
-        icon: 'dollar-sign',
-      },
-      date: '13/04/2020',
-    },
-    {
-      id: '2',
-      type: 'negative',
-      title: 'Hamburgueria Pizzy',
-      amount: 'R$ 59,00',
-      category: {
-        name: 'Alimentacao',
-        icon: 'coffee',
-      },
-      date: '10/04/2020',
-    },
-    {
-      id: '3',
-      type: 'negative',
-      title: 'Aluguel do Apartamento',
-      amount: 'R$ 1.200,00',
-      category: {
-        name: 'Casa',
-        icon: 'home',
-      },
-      date: '10/04/2020',
-    },
-  ];
+  const [data, setData] = useState<DataListProps[]>([]);
+
+  async function loadTransaction() {
+    const dataKey = '@gofinance:transactions';
+    const response = await AsyncStorage.getItem(dataKey);
+    const transactions = response ? JSON.parse(response) : [];
+    const transactionsFormatted: DataListProps[]  = transactions.map((
+      item: DataListProps
+    ) => {
+      const amount = Number(item.amount).toLocaleString('pt-BR', { 
+        style: 'currency',
+        currency: 'BRL'
+      });
+
+      const date = Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit'
+      }).format(new Date(item.date));
+
+      return {
+        id: item.id,
+        name: item.name,
+        amount,
+        type: item.type,
+        category: item.category,
+        date
+      }
+    });
+    setData(transactionsFormatted);
+  }
+
+  useEffect(() => {
+
+    loadTransaction();
+  }, []);
+
+  useFocusEffect(useCallback(() => {
+    loadTransaction();
+  }, []));
 
   return (
     <Container>
