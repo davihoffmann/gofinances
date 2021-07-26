@@ -69,8 +69,6 @@ export default function Register(): ReactElement {
   }
 
   async function handleRegister(form: FormData) {
-    const dataKey = '@gofinance:transactions';
-    
     if (!transactionType) {
       Alert.alert('Selecione o Tipo da Transação');
       return;
@@ -87,18 +85,15 @@ export default function Register(): ReactElement {
       amount: form.amount,
       type: transactionType,
       category: category.key,
-      date: new Date()
+      date: new Date(),
     };
 
     try {
+      const dataKey = '@gofinance:transactions';
       const data = await AsyncStorage.getItem(dataKey);
+      const currentData = data ? JSON.parse(data) : [];
 
-      const currentData = data ?JSON.parse(data) : [];
-
-      const dataFormatted = [
-        ...currentData, 
-        newTransaction
-      ];
+      const dataFormatted = [...currentData, newTransaction];
 
       await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
 
@@ -163,7 +158,7 @@ export default function Register(): ReactElement {
 
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
-        
+
         <Modal visible={categoryModalOpen}>
           <CategorySelect
             category={category}
