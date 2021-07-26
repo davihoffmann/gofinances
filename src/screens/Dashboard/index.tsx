@@ -23,25 +23,35 @@ import {
   Transactions,
   Title,
   TransactionList,
-  LoadContainer
+  LoadContainer,
 } from './styles';
 
 export default function Dashboard(): ReactElement {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
-  const [highLightData, setHighLightData] = useState<HighLightData>({} as HighLightData);
+  const [highLightData, setHighLightData] = useState<HighLightData>(
+    {} as HighLightData
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   const theme = useTheme();
 
-  function getLastTransactionsDate(collection: DataListProps[], type: 'positive' | 'negative'){
-    const lastTransaction = new Date(Math.max.apply(
-      Math, 
-      collection
-        .filter(transaction => transaction.type === type)
-        .map(transaction => new Date(transaction.date).getTime())
-    ));
+  function getLastTransactionsDate(
+    collection: DataListProps[],
+    type: 'positive' | 'negative'
+  ) {
+    const lastTransaction = new Date(
+      Math.max.apply(
+        Math,
+        collection
+          .filter((transaction) => transaction.type === type)
+          .map((transaction) => new Date(transaction.date).getTime())
+      )
+    );
 
-    return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', { month: 'long' })}`;
+    return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString(
+      'pt-BR',
+      { month: 'long' }
+    )}`;
   }
 
   async function loadTransaction() {
@@ -52,96 +62,101 @@ export default function Dashboard(): ReactElement {
     let entriesTotal = 0;
     let expensiveTotal = 0;
 
-    const transactionsFormatted: DataListProps[]  = transactions.map((
-      item: DataListProps
-    ) => {
-      if(item.type === 'positive') {
-        entriesTotal += Number(item.amount);
-      } else {
-        expensiveTotal += Number(item.amount);
+    const transactionsFormatted: DataListProps[] = transactions.map(
+      (item: DataListProps) => {
+        if (item.type === 'positive') {
+          entriesTotal += Number(item.amount);
+        } else {
+          expensiveTotal += Number(item.amount);
+        }
+
+        const amount = Number(item.amount).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        });
+
+        const date = Intl.DateTimeFormat('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit',
+        }).format(new Date(item.date));
+
+        return {
+          id: item.id,
+          name: item.name,
+          amount,
+          type: item.type,
+          category: item.category,
+          date,
+        };
       }
-
-      const amount = Number(item.amount).toLocaleString('pt-BR', { 
-        style: 'currency',
-        currency: 'BRL'
-      });
-
-      const date = Intl.DateTimeFormat('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: '2-digit'
-      }).format(new Date(item.date));
-
-      return {
-        id: item.id,
-        name: item.name,
-        amount,
-        type: item.type,
-        category: item.category,
-        date
-      }
-    });
+    );
 
     setTransactions(transactionsFormatted);
 
-    const lastTransactionEntries = getLastTransactionsDate(transactions, 'positive');
-    const lastTransactionExpansives = getLastTransactionsDate(transactions, 'negative');
+    const lastTransactionEntries = getLastTransactionsDate(
+      transactions,
+      'positive'
+    );
+    const lastTransactionExpansives = getLastTransactionsDate(
+      transactions,
+      'negative'
+    );
     const totalInterval = `01 a ${lastTransactionExpansives}`;
 
     const total = entriesTotal - expensiveTotal;
 
     setHighLightData({
       entries: {
-        amount: entriesTotal.toLocaleString('pt-BR', { 
+        amount: entriesTotal.toLocaleString('pt-BR', {
           style: 'currency',
-          currency: 'BRL'
+          currency: 'BRL',
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionEntries}`
+        lastTransaction: `Última entrada dia ${lastTransactionEntries}`,
       },
       expensives: {
-        amount: expensiveTotal.toLocaleString('pt-BR', { 
+        amount: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
-          currency: 'BRL'
+          currency: 'BRL',
         }),
-        lastTransaction: `Última saída dia ${lastTransactionExpansives}`
+        lastTransaction: `Última saída dia ${lastTransactionExpansives}`,
       },
       total: {
-        amount: total.toLocaleString('pt-BR', { 
+        amount: total.toLocaleString('pt-BR', {
           style: 'currency',
-          currency: 'BRL'
+          currency: 'BRL',
         }),
-        lastTransaction: totalInterval
-      }
+        lastTransaction: totalInterval,
+      },
     });
 
     setIsLoading(false);
   }
 
   useEffect(() => {
-
     loadTransaction();
   }, []);
 
-  useFocusEffect(useCallback(() => {
-    loadTransaction();
-  }, []));
+  useFocusEffect(
+    useCallback(() => {
+      loadTransaction();
+    }, [])
+  );
 
   return (
     <Container>
-      
-      { isLoading ? (
+      {isLoading ? (
         <LoadContainer>
-          <ActivityIndicator 
-            color={theme.colors.primary}
-            size="large"
-          />
+          <ActivityIndicator color={theme.colors.primary} size="large" />
         </LoadContainer>
       ) : (
         <>
           <Header>
             <UserWrapper>
               <UserInfo>
-                <Photo source={{ uri: 'https://github.com/davihoffmann.png' }} />
+                <Photo
+                  source={{ uri: 'https://github.com/davihoffmann.png' }}
+                />
                 <User>
                   <UserGreeting>Olá,</UserGreeting>
                   <UserName>Davi</UserName>
@@ -185,8 +200,7 @@ export default function Dashboard(): ReactElement {
             />
           </Transactions>
         </>
-      )  }
-
+      )}
     </Container>
   );
 }
