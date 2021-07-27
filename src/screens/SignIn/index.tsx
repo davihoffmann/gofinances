@@ -5,6 +5,8 @@ import AppleSvg from '../../assets/apple.svg';
 import GoogleSvg from '../../assets/google.svg';
 import LogoSvg from '../../assets/logo.svg';
 
+import SignInSocialButton from '../../components/SignInSocialButton';
+
 import {
   Container,
   Header,
@@ -12,6 +14,7 @@ import {
   Title,
   SignInTitle,
   Footer,
+  FooterWrapper
 } from './styles';
 
 export default function SignIn(): ReactElement {
@@ -34,7 +37,12 @@ export default function SignIn(): ReactElement {
         </SignInTitle>
       </Header>
 
-      <Footer></Footer>
+      <Footer>
+        <FooterWrapper>
+          <SignInSocialButton title="Entrar com Google" svg={GoogleSvg} />
+          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} />
+        </FooterWrapper>
+      </Footer>
     </Container>
   );
 }
