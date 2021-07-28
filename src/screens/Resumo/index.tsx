@@ -9,6 +9,7 @@ import { ptBR } from 'date-fns/locale';
 
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
 
 import HistoryCard from '../../components/HistoryCard';
 
@@ -39,6 +40,7 @@ interface CategoryData {
 
 export default function Resumo(): ReactElement {
   const theme = useTheme();
+  const { user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -58,7 +60,7 @@ export default function Resumo(): ReactElement {
 
   async function loadData() {
     setIsLoading(true);
-    const dataKey = '@gofinance:transactions';
+    const dataKey = `@gofinance:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted: DataListProps[] = response
       ? JSON.parse(response)
