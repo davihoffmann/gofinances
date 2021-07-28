@@ -6,7 +6,8 @@ import { useTheme } from 'styled-components';
 
 import HighlightCard from '../../components/HightlightCard';
 import TransactionCard from '../../components/TransactionCard';
-import { DataListProps, HighLightData } from './types';
+
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
@@ -26,6 +27,8 @@ import {
   LoadContainer,
 } from './styles';
 
+import { DataListProps, HighLightData } from './types';
+
 export default function Dashboard(): ReactElement {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highLightData, setHighLightData] = useState<HighLightData>(
@@ -33,6 +36,7 @@ export default function Dashboard(): ReactElement {
   );
   const [isLoading, setIsLoading] = useState(true);
 
+  const { user, signOut } = useAuth();
   const theme = useTheme();
 
   function getLastTransactionsDate(
@@ -155,15 +159,15 @@ export default function Dashboard(): ReactElement {
             <UserWrapper>
               <UserInfo>
                 <Photo
-                  source={{ uri: 'https://github.com/davihoffmann.png' }}
+                  source={{ uri: user.photo }}
                 />
                 <User>
                   <UserGreeting>Olá,</UserGreeting>
-                  <UserName>Davi</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
 
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>
