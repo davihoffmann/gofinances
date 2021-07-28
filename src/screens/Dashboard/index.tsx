@@ -43,12 +43,16 @@ export default function Dashboard(): ReactElement {
     collection: DataListProps[],
     type: 'positive' | 'negative'
   ) {
+    const collectionFilttered = collection.filter((transaction) => transaction.type === type);
+
+    if(collectionFilttered.length === 0) {
+      return 0;
+    }
+
     const lastTransaction = new Date(
       Math.max.apply(
         Math,
-        collection
-          .filter((transaction) => transaction.type === type)
-          .map((transaction) => new Date(transaction.date).getTime())
+        collectionFilttered.map((transaction) => new Date(transaction.date).getTime())
       )
     );
 
@@ -106,7 +110,7 @@ export default function Dashboard(): ReactElement {
       transactions,
       'negative'
     );
-    const totalInterval = `01 a ${lastTransactionExpansives}`;
+    const totalInterval = lastTransactionExpansives === 0 ? 'Não há transações' : `01 a ${lastTransactionExpansives}`;
 
     const total = entriesTotal - expensiveTotal;
 
@@ -116,14 +120,14 @@ export default function Dashboard(): ReactElement {
           style: 'currency',
           currency: 'BRL',
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionEntries}`,
+        lastTransaction: lastTransactionEntries === 0 ? 'Não há transações' : `Última entrada dia ${lastTransactionEntries}`,
       },
       expensives: {
         amount: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         }),
-        lastTransaction: `Última saída dia ${lastTransactionExpansives}`,
+        lastTransaction: lastTransactionExpansives === 0 ? 'Não há transações' : `Última saída dia ${lastTransactionExpansives}`,
       },
       total: {
         amount: total.toLocaleString('pt-BR', {
