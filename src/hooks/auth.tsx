@@ -1,5 +1,6 @@
 import React, { ReactNode, createContext, useContext, useState } from 'react';
 import * as AuthSession from 'expo-auth-session';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 interface AuthProviderProps {
   children: ReactNode
@@ -15,6 +16,7 @@ interface User {
 interface AuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
+  signInWithApple(): Promise<void>;
 }
 
 interface AuthorizationResponse {
@@ -59,8 +61,31 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signInWithApple() {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ]
+      });
+
+      if(credential) {
+        const userLogged = {
+          id: credential.user,
+          email: credential.email!,
+          name: credential.fullName!.givenName!,
+        }
+
+        setUser(userLogged);
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
       {children}
     </AuthContext.Provider>
   )

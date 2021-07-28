@@ -22,7 +22,7 @@ import {
 
 export default function SignIn(): ReactElement {
 
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInWithApple } = useAuth();
 
   async function handleSignInWithGoogle() {
     try {
@@ -30,6 +30,15 @@ export default function SignIn(): ReactElement {
     } catch(error) {
       console.error(error);
       Alert.alert('Não foi possível conectar a conta Google.');
+    }
+  }
+
+  async function handlesignInWithApple() {
+    try {
+      await signInWithApple();
+    } catch(error) {
+      console.error(error);
+      Alert.alert('Não foi possível conectar a conta Apple.');
     }
   }
 
@@ -55,7 +64,7 @@ export default function SignIn(): ReactElement {
       <Footer>
         <FooterWrapper>
           <SignInSocialButton title="Entrar com Google" svg={GoogleSvg} onPress={handleSignInWithGoogle} />
-          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} />
+          <SignInSocialButton title="Entrar com Apple" svg={AppleSvg} onPress={handlesignInWithApple} />
         </FooterWrapper>
       </Footer>
     </Container>
