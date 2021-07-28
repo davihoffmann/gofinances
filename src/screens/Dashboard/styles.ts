@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { FlatList } from 'react-native';
+import { Platform, FlatList } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
@@ -30,7 +30,7 @@ export const UserWrapper = styled.View`
   width: 100%;
 
   padding: 0 24px;
-  margin-top: ${getStatusBarHeight() + RFValue(10)}px;
+  margin-top: ${Platform.OS === 'ios' ? getStatusBarHeight() + RFValue(24) : RFValue(24)}px;
 
   flex-direction: row;
   justify-content: space-between;
