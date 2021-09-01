@@ -1,6 +1,6 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -37,7 +37,7 @@ interface FormData {
 }
 
 export default function Register(): ReactElement {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const [category, setCategory] = useState({
     key: 'category',
@@ -62,7 +62,9 @@ export default function Register(): ReactElement {
   }
 
   function handleOpenModalSelectCategory() {
-    setCategoryModalOpen(true);
+    setTimeout(() => {
+      setCategoryModalOpen(true);
+    }, 1000);
   }
 
   function handleCloseModalSelectCategory() {
@@ -105,7 +107,7 @@ export default function Register(): ReactElement {
         name: 'Category',
       });
 
-      navigation.navigate('Listagem');
+      // navigation.navigate('Listagem');
     } catch (error) {
       console.error(error);
       Alert.alert('Não foi possível salvar os dados.');
@@ -152,6 +154,7 @@ export default function Register(): ReactElement {
             </TransactionsType>
 
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleOpenModalSelectCategory}
             />
@@ -160,7 +163,7 @@ export default function Register(): ReactElement {
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
 
-        <Modal visible={categoryModalOpen}>
+        <Modal testID="modal-category" visible={categoryModalOpen}>
           <CategorySelect
             category={category}
             setCategory={setCategory}
